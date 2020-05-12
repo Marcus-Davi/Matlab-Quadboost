@@ -1,7 +1,7 @@
 clear;
 close all;
 clc;
-
+addpath(genpath('.')) % adiciona bibliotecas à path
 %% Caracteristicas do conversor
 % Quadratic Boost Data Structure
 BoostQ.L1 = 1.48e-3;
