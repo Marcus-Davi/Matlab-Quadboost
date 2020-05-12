@@ -1,4 +1,4 @@
-clear all;
+clear;
 close all;
 clc;
 
@@ -22,7 +22,7 @@ BoostQ.Dn = 0.5; % AJUSTE DO DUTY CYCLE NOMINAL
 BoostQ.Vout = BoostQ.Vin/(1-BoostQ.Dn)^2;
 save('Boost_Data','BoostQ');
 
-%% Configuração PRBS
+%% Configuraï¿½ï¿½o PRBS
 %TbN>/ Tassentamento
 %1/(2^N-1)Tb < fprbs < 0.44/Tb
 %Assentamento = 0.01
@@ -38,7 +38,7 @@ Tsim_min = (2^PRBS_N-1)*Tb;
 Tsim = 1*Tsim_min;
 Ramp_Max = 0.75;
 sim 'BoostQuadSimu'
-%% Identificação LPV (LMS-Global)
+%% Identificaï¿½ï¿½o LPV (LMS-Global)
 
 u = Din.Data;
 y = Vout.Data;
@@ -50,7 +50,7 @@ y_norm = max(y);
 y = y/y_norm;
 Gains.Ynorm = y_norm;
 
-%Configurações do modelo
+%Configuraï¿½ï¿½es do modelo
 Na = 6;
 N = 2;
 Iterations = 70;
@@ -61,7 +61,7 @@ alpha_1 = 0.002; %final
 
 Modelo_MA_LPV_LMS = ident_lpv_lms_sb0_loop(y,u,p,Ts,Na,N,alpha_0,alpha_1,'plota1',Iterations)
 % m_printa_modelo_LPV (Modelo_MA_LPV_LMS,Na,Na,N);
-% m_salva_planta_lpv_struct('Modelo_MA_LPV_LMS',Modelo_MA_LPV_LMS,Ts,Na,N);
+m_salva_planta_lpv_struct('Modelo_MA_LPV_LMS',Modelo_MA_LPV_LMS,Ts,Na,N);
 valida_mod_LPV(y,u,p,Modelo_MA_LPV_LMS,Ts,Na,N,'plota1');
 disp('Nome = MODELO_MA_LPV');
 save('Gains','Gains');
@@ -69,16 +69,18 @@ save('Gains','Gains');
 %% Plot
 valida_ARX_LPV(y,u,p,Modelo_MA_LPV_LMS,Ts,Na,N,'plota1');
 
+
 % Carrega Modelo LPV Salvo
 sdpvar teta
-[B_LPV,A_LPV] = carrega_planta_lpv('Modelo_LPV_exemplo.txt',teta);
+% [B_LPV,A_LPV] = carrega_planta_lpv('Modelo_MA_LPV_LMS.txt',teta);
+ [B_LPV,A_LPV] = m_carrega_planta_lpv('Modelo_MA_LPV_LMS',teta);
 
-% Gráfico com o pólos do modelo LPV estimado 
+% Grï¿½fico com o pï¿½los do modelo LPV estimado 
 maximo = 0.7;
 minimo = 0.3;
 precisao = 0.01;
-plota_polos_LPV(A_LPV,teta,maximo,minimo,precisao,'Xm');
+plota_polos(A_LPV,teta,maximo,minimo,precisao,'Xm');
 
-% Gráfico com a resposta ao degrau do modelo LPV estimado
-plota_degrau_LPV(B_LPV,A_LPV,teta,maximo,minimo,Ts)  
+% Grï¿½fico com a resposta ao degrau do modelo LPV estimado
+plota_degrau(B_LPV,A_LPV,teta,maximo,minimo,0.1,Ts)  
   

@@ -1,0 +1,3 @@
+[submodule "Matlab-Lpvlib"]
+	path = Matlab-Lpvlib
+	url = git@github.com:Marcus-Davi/Matlab-Lpvlib.git
