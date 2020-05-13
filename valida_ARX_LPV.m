@@ -1,4 +1,4 @@
-function id = valida_mod_LPV(yv,uv,pv,Theta_k,Ts,Na,N,grafico)             
+function id = valida_ARX_LPV(yv,uv,pv,Theta_k,Ts,Na,N,grafico)             
 
 [rows,columns] = size(yv);
 if rows<columns,
@@ -16,7 +16,7 @@ n = Na+Nb+1; % Number of parametric functions to be identified
 N=N+1;
 
 %display(' ');
-%display('Montando Simulação do Modelo...');
+%display('Montando Simulaï¿½ï¿½o do Modelo...');
 
 k=Na+1;
 
@@ -59,8 +59,8 @@ if grafico=='plota1',
     plot(tempo,yv,'k--')
     plot(tempo,ye,'b')
     plot(tempo,pv,'r')
-    legend('Saída medida','Saída do modelo','Parâmetro Variante');
-    title('Comparação entre as saídas estimada e medida')
+    legend('Saï¿½da medida','Saï¿½da do modelo','Parï¿½metro Variante');
+    title('Comparaï¿½ï¿½o entre as saï¿½das estimada e medida')
     hold off
 end
 
