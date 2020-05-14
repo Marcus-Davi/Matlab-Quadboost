@@ -43,7 +43,7 @@ IinTotal = [];
 PinTotal = [];
 
 for DutyConst = DinRange
-sim('BoostQSim') %Mudar pra versão de acordo!
+sim('BoostQSim')
 DinTotal = [DinTotal Din.Data]; % Entrada [Duty]
 VoutTotal = [VoutTotal Vout.Data]; % Saída [V]
 IinTotal = [IinTotal Iin.Data]; % Entrada Corrente [A]
@@ -56,14 +56,10 @@ save('BoostSimData','DinTotal','VoutTotal','IinTotal','PinTotal','DinRange'); %S
 disp('Dados de simulação salvos em BoostSimData. Usar nas funções de identificação')
 
 
-%% Plots (Pode comentar de boa)
+%% Plots opcionais
 plot(VoutTotal)
-xlabel('Amostra')
-ylabel('[V]')
+legen
 grid on;
 
 figure
 plot(DinTotal)
-xlabel('Amostra')
-ylabel('Duty')
-grid on

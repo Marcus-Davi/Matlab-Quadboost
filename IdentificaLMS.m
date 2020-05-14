@@ -1,15 +1,16 @@
 clear;close all;clc
 %% Identifica��o LPV (LMS-Global)
-load('BoostQParameters'); %for Ts
-load('BoostSimData');
-% load('dataa')
-DinRange %correspondencia entre coluan de vetores de dados e duty cycle usado.
-%Ex Dinrange = [0.3 0.5] -> Din(:,2) corresponde ao dados do ensaio para
-%0.5
+load('BoostQParameters'); % Apenas pra usarmos o Ts da simulação
+load('BoostSimData'); % Dados de simulação
 
- ninit = 1000;
- u = DinTotal(ninit:end,1);
- y = VoutTotal(ninit:end,1);
+DinRange %correspondencia entre coluan de vetores de dados e duty cycle usado.
+%Ex Dinrange = [0.3 0.5] -> Din(:,2) corresponde ao dados do ensaio para 0.5
+Selecionador = 2; % seleciona os dados correspondentes à coluna do DinRagne
+
+
+ ninit = 1000; %Ignorar dinâmica de
+ u = DinTotal(ninit:end,Selecionador);
+ y = VoutTotal(ninit:end,Selecionador);
  p = u;
 
 Ts = BoostQParam.Ts;
@@ -29,7 +30,7 @@ alpha_1 = 0.002; %final
 % alpha_1 = 2; %final
 
 
-Modelo_MA_LPV_LMS = ident_lpv_lms_sb0_loop(y,u,p,Ts,Na,N,alpha_0,alpha_1,'plota1',Iterations)
+Modelo_MA_LPV_LMS = ident_lpv_lms_sb0_loop(y,u,p,Ts,Na,N,alpha_0,alpha_1,'plota1',Iterations);
 % m_printa_modelo_LPV (Modelo_MA_LPV_LMS,Na,Na,N);
 m_salva_planta_lpv_struct('Modelo_MA_LPV_LMS',Modelo_MA_LPV_LMS,Ts,Na,N);
 valida_mod_LPV(y,u,p,Modelo_MA_LPV_LMS,Ts,Na,N,'plota1');
@@ -38,7 +39,7 @@ save('Gains','Gains');
 
 %% Plot
 close all
- valida_ARX_LPV(y,u,p,Modelo_MA_LPV_LMS,Ts,Na,N,'plota1');
+valida_ARX_LPV(y,u,p,Modelo_MA_LPV_LMS,Ts,Na,N,'plota1');
 
 
 % Carrega Modelo LPV Salvo
