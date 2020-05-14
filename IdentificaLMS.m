@@ -2,27 +2,29 @@ clear;close all;clc
 %% Identifica��o LPV (LMS-Global)
 load('BoostQParameters'); %for Ts
 load('BoostSimData');
-
+% load('dataa')
 DinRange %correspondencia entre coluan de vetores de dados e duty cycle usado.
 %Ex Dinrange = [0.3 0.5] -> Din(:,2) corresponde ao dados do ensaio para
 %0.5
-n = length(VoutTotal);
-u = DinTotal(:,1);
-y = VoutTotal(:,1);
-p = DinTotal(:,1);
+
+ ninit = 1000;
+ u = DinTotal(ninit:end,1);
+ y = VoutTotal(ninit:end,1);
+ p = u;
+
 Ts = BoostQParam.Ts;
 
 %Normaliza saida
 y_norm = max(y);
 y = y/y_norm;
 Gains.Ynorm = y_norm;
-
+% return
 %Configura��es do modelo
-Na = 2;
-N = 1;
-Iterations = 50;
-alpha_0 = 0.06; %inicial
-alpha_1 = 0.02; %final
+Na = 6;
+N = 2;
+Iterations = 70;
+alpha_0 = 0.006; %inicial
+alpha_1 = 0.002; %final
 % alpha_0 = 6; %inicial
 % alpha_1 = 2; %final
 

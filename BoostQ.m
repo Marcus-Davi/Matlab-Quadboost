@@ -21,7 +21,6 @@ BoostQParam.Rmos = 0.1;
 BoostQParam.Dn = 0.5; % AJUSTE DO DUTY CYCLE NOMINAL
 BoostQParam.Vout = BoostQParam.Vin/(1-BoostQParam.Dn)^2;
 save('BoostQParameters','BoostQParam');
-
 %% Configura��o PRBS
 %TbN>/ Tassentamento
 %1/(2^N-1)Tb < fprbs < 0.44/Tb
@@ -33,13 +32,26 @@ Lmax = 0.44/Tb;
 Lmin = 1/((2^PRBS_N-1)*Tb);
 PRBS_Ts = Tb;
 % PRBS_Ts = 5;
-PRBS_Amp = .05;
+PRBS_Amp = .1;
 Tsim_min = (2^PRBS_N-1)*Tb;
 Tsim = 1*Tsim_min;
 Ramp_Max = 0.75;
 
-DutyConst = BoostQParam.Dn;
+%% Simula 
+DinRange = [0.3 0.5 0.7];
+DinTotal = [];
+VoutTotal = [];
+IinTotal = [];
+PinTotal = [];
 
-sim('BoostQSim');
+for DutyConst = DinRange
+sim('BoostQSim')
+DinTotal = [DinTotal Din.Data]; 
+VoutTotal = [VoutTotal Vout.Data];
+IinTotal = [IinTotal Iin.Data];
+PinTotal = [PinTotal Pin.Data];
+end
 
-save('BoostSimData','Din','Vout'); %Só duty e corrente
+
+save('BoostSimData','DinTotal','VoutTotal','IinTotal','PinTotal','DinRange'); %Só duty e corrente
+

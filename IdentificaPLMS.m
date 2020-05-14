@@ -3,32 +3,34 @@ clear;close all;clc
 load('BoostQParameters'); %for Ts
 load('BoostSimData');
 
-ymin = VoutTotal(:,1);
-ymed = VoutTotal(:,2);
-ymax = VoutTotal(:,3);
+ninit = 1000; 
+ymin = VoutTotal(ninit:end,1);
+ymed = VoutTotal(ninit:end,2);
+ymax = VoutTotal(ninit:end,3);
 
 %Normaliza saida
-y_norm = max(Voutmax.Data);
+y_norm = max(ymax);
 ymin = ymin/y_norm;
 ymed = ymed/y_norm;
 ymax = ymax/y_norm;
 Gains.Ynorm = y_norm;
 
 % Constru��o dos vetores
-uplms = [DinTotal(:,1)  DinTotal(:,2)  DinTotal(:,3)];
-yplms = [ymin ymed ymax];
+uplms = [ DinTotal(ninit:end,3)];
+yplms = [ ymax];
+pplms = uplms;
 % pplms = [PinTotal(:,1) PinTotal(:,2) PinTotal(:,3)];
-pplms = [DinTotal(:,1) DinTotal(:,2) DinTotal(:,3)];
+% pplms = [DinTotal(:,1) DinTotal(:,2) DinTotal(:,3)];
 Ts = BoostQParam.Ts;
-return
+% return
 %% Identifica��o
 
 %Configura��es do modelo
 Na = 6;
 N = 2;
-Iterations = 50;
-alpha_0 = 0.0000006; %inicial
-alpha_1 = 0.0000002; %final
+Iterations = 200;
+alpha_0 = 0.000006; %inicial
+alpha_1 = 0.000002; %final
 
 Modelo_MA_LPV = ident_lpv_plms_sb0_loop(yplms,uplms,pplms,Ts,Na,N,alpha_0,alpha_1,'plota0',Iterations);
 
